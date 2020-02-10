@@ -3,6 +3,7 @@ var COLOURS = { WHITE: 0, BLACK: 1, BOTH: 2 };
 var BOOL = { FALSE: 0, TRUE: 1 };
 var FilesBrd = new Array(BRD_SQ_NUM);
 var RanksBrd = new Array(BRD_SQ_NUM);
+var CASTLEBIT = { WKCA: 1, WQCA: 2, BKCA: 4, BQCA: 8 };
 
 function FR2SQ(f, r) {
   return 21 + f + r * 10;
