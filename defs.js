@@ -28,6 +28,12 @@ var CastleKeys = new Array(16);
 var Sq120ToSq64 = new Array(BRD_SQ_NUM);
 var Sq64ToSq120 = new Array(64);
 
+var START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
+var PceChar = ".PNBRQKpnbrqk";
+var SideChar = "wb-";
+var RankChar = "123456789";
+var FileChar = "abcdefgh";
+
 function SQ64(sq120) {
   return Sq120ToSq64[sq120];
 }
