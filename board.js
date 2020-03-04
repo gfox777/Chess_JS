@@ -20,6 +20,56 @@ GameBoard.moveList = new Array(MAXDEPTH * MAXPOSITIONMOVES);
 GameBoard.moveScores = new Array(MAXDEPTH * MAXPOSITIONMOVES);
 GameBoard.moveListStart = new Array(MAXDEPTH);
 
+function PrintPieceLists() {
+  var piece, pceNum;
+  for (piece = PIECES.wP; piece <= PIECES.bK; ++piece) {
+    for (pceNum = 0; pceNum < GameBoard.pceNum[piece]; ++pceNum) {
+      console.log(
+        "Piece " +
+          PceChar[piece] +
+          " on " +
+          PrSq(GameBoard.pList[PCEINDEX(piece, pceNum)])
+      );
+    }
+  }
+}
+
+function SqAttacked(sq, side) {
+  var pce;
+  var t_sq;
+  var index;
+  if (side == COLOURS.WHITE) {
+    if (
+      GameBoard.pieces[sq - 11] == PIECES.wP ||
+      GameBoard.pieces[sq - 9] == PIECES.wP
+    ) {
+      return BOOL.TRUE;
+    }
+  } else {
+    if (
+      GameBoard.pieces[sq + 11] == PIECES.bP ||
+      GameBoard.pieces[sq + 9] == PIECES.bP
+    ) {
+      return BOOL.TRUE;
+    }
+  }
+}
+
+function UpdateListMaterial() {
+  var piece, sq, index, colour;
+  for (index = 0; index < 64; ++index) {
+    sq = SQ120(index);
+    piece = GameBoard.pieces[sq];
+    if (piece != PIECES.EMPTY) {
+      colour = PieceCol[piece];
+      GameBoard.material[colour] += PieceVal[piece];
+      GameBoard.pList[PCEINDEX(piece, GameBoard.pceNum[piece])] = sq;
+      GameBoard.pceNum[piece]++;
+    }
+  }
+  PrintPieceLists();
+}
+
 function PrintBoard() {
   var sq, file, rank, piece;
   console.log("\nGame Board:\n");
@@ -76,9 +126,7 @@ function ResetBoard() {
   for (index = 0; index < BRD_SQ_NUM; ++index) {
     GameBoard.pieces[index] = SQUARES.OFFBOARD;
   }
-  for (index = 0; index < 64; ++index) {
-    GameBoard.pieces[SQ120(index)] = PIECES.EMPTY;
-  }
+
   for (index = 0; index < 14 * 120; ++index) {
     GameBoard.pList[index] = PIECES.EMPTY;
   }
@@ -87,6 +135,10 @@ function ResetBoard() {
   }
   for (index = 0; index < 13; ++index) {
     GameBoard.pceNum[index] = 0;
+  }
+
+  for (index = 0; index < 64; ++index) {
+    GameBoard.pieces[SQ120(index)] = PIECES.EMPTY;
   }
 
   GameBoard.side = COLOURS.BOTH;
@@ -211,4 +263,6 @@ function ParseFen(fen) {
     GameBoard.enPas = FR2SQ(file, rank);
   }
   GameBoard.posKey = GeneratePosKey();
+  UpdateListMaterial();
+  SqAttacked(21, 0);
 }
