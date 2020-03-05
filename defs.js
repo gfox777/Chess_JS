@@ -8,6 +8,11 @@ var MAXGAMEMOVES = 2048;
 var MAXPOSITIONMOVES = 256;
 var MAXDEPTH = 64;
 
+var KnDir = [-8, -19, -21, -12, 8, 19, 21, 12];
+var RkDir = [-1, -10, 1, 10];
+var BiDir = [-9, -11, 11, 9];
+var KiDir = [-1, -10, 1, 10, -9, -11, 11, 9];
+
 function FR2SQ(f, r) {
   return 21 + f + r * 10;
 }
